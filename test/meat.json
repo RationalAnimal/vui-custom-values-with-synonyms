@@ -1,0 +1,16 @@
+{
+  "mappingFunctionName": "mapDeliciousCritters",
+  "fileName": "tastycritters.txt",
+  "values": [
+    {
+      "text": "beef"
+    },
+    {
+      "text": "the other white meat",
+      "mapTo": "pork"
+    },
+    {
+      "text": "pork"
+    }
+  ]
+}
