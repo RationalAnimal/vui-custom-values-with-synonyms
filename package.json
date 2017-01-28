@@ -14,5 +14,11 @@
     "express": "^4.14.0",
     "istanbul": "^0.4.5",
     "mocha": "^3.2.0"
-  }
+  },
+  "keywords": [
+    "vui",
+    "alexa",
+    "custom slot",
+    "synonyms"
+  ]
 }
