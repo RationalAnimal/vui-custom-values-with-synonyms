@@ -63,10 +63,34 @@ russell
 potato
 ```
 
-# Mapping functions
+# Synonyms and Mapping Functions
 
-Another advantage is the automatic generation of mapping functions whenever you add a custom slot.  So, after adding "vegetable" custom slot
-above, the following code
+Frequently in a VUI app you will design your interactions so that your app will accept multiple versions of the same answer.
+For example, an ingredients question might ask for vegetables and will treat "scallion" and "green onion" values as completely equivalent.
+Rather than have ad hoc logic, you can simply treat them as synonyms and map them to the same value.
+And this module will automatically generate of mapping function whenever you add a custom slot.
+So, after adding "vegetable" custom slot such as this:
+
+```javascript
+app.addCustomSlot("vegetable",
+  {
+    mappingFunctionName: "mapDeliciousVegetable",
+    values: [
+    {
+      text: "potato"
+    },
+    {
+      text: "green onion",
+      mapTo: "scallion"
+    },
+    {
+      text: "scallion"
+    }
+  ]}
+);
+```
+
+the following code
 
 ```javascript
 console.log(app.mapDeliciousVegetable(app.getCustomSlotValues("vegetable")[0]));
@@ -77,9 +101,9 @@ console.log(app.mapDeliciousVegetable(app.getCustomSlotValues("vegetable")[2]));
 will print the mapped slot values for the "vegetable" custom slot:
 
 ```shell
-carrot
 potato
-potato
+scallion
+scallion
 ```
 
 # Loading from JSON files
