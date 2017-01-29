@@ -106,6 +106,74 @@ potato
 scallion
 scallion
 ```
+# Prompts
+
+In VUI programming there is often a need to prompt the user for selecting amongst
+several options. When these answers are accepted they are usually treated as a
+custom slot - this way only a single intent is needed.  With vui-custom-values-with-synonyms
+you can add the prompts as part of the custom slot/type definition.
+
+Imagine you would like to ask a user what type of movie he'd like to watch.  You may
+define a custom slot this way:
+
+```javascript
+app.addCustomSlot("moviegenre",
+  {
+    mappingFunctionName: "mapMovieGenre",
+		values: [
+			{
+				text: "comedy",
+				prompts: [
+					{
+						categories: ["DEFAULT", "datenight"],
+						text: "a funny comedy to make you laugh "
+					}
+				]
+			},
+			{
+				text: "drama",
+				prompts: [
+					{
+						categories: ["DEFAULT", "datenight"],
+						text: "a serious drama "
+					}
+				]
+			},
+			{
+				text: "horror",
+				prompts: [
+					{
+						categories: ["DEFAULT"],
+						text: "a horror movie to scare you "
+					}
+				]
+			}
+		]
+  }
+);
+```
+
+then you can build a prompt for the user to select a genre like this:
+
+```javascript
+var askUser = "What kind of a movie would you like to watch?  You can select from: ";
+var defaultPrompts = app.getPrompts("moviegenre");
+for(var i = 0; i < defaultPrompts.length; i++){
+	askUser += defaultPrompts[i];
+}
+```
+
+or if you want to ask the user only for the movie genres that are likely to be
+appropriate for a date night, you can do it like this:
+
+```javascript
+var askUser = "What kind of a movie would you like to watch together?  You can select from: ";
+var dateNightPrompts = app.getPrompts("moviegenre", "datenight");
+for(var i = 0; i < dateNightPrompts.length; i++){
+	askUser += dateNightPrompts[i];
+}
+```
+
 
 # Loading from JSON files
 
@@ -115,4 +183,26 @@ you can easily load it from a file, e.g.:
 ```javascript
 var meats = require("./meat.json");
 app.addCustomSlot("meat", meats);
+```
+
+where the meat.json file contains the same text as what you'd pass to
+addCustomSlot() call:
+
+```shell
+{
+  "mappingFunctionName": "mapDeliciousCritters",
+  "fileName": "tastycritters.txt",
+  "values": [
+    {
+      "text": "beef"
+    },
+    {
+      "text": "the other white meat",
+      "mapTo": "pork"
+    },
+    {
+      "text": "pork"
+    }
+  ]
+}
 ```

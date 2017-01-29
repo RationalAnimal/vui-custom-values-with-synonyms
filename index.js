@@ -1,4 +1,6 @@
 /*
+@author Ilya Shubentsov
+
 MIT License
 
 Copyright (c) 2017 Ilya Shubentsov
@@ -51,14 +53,42 @@ synonyms.addSynonymsToApp = function(app){
   *
   *   values: [
   *     {
-  *       text: "apple"
+  *       text: "apple",
+  *       prompts: [
+  *         {
+  *          categories: ["DEFAULT", "desert"],
+  *          text: "apple"
+  *         }
+  *       ]
   *     },
   *     {
   *       text: "golden delicious",
-  *       mapTo: "apple"
+  *       mapTo: "apple",
+  *       prompts: [
+  *         {
+  *          categories: ["apple variety"],
+  *          text: "golden delicious apple"
+  *         }
+  *       ]
   *     },
   *     {
-  *       text: "banana"
+  *       text: "granny smith",
+  *       mapTo: "apple",
+  *       prompts: [
+  *         {
+  *          categories: ["apple variety"],
+  *          text: "granny smith apple"
+  *         }
+  *       ]
+  *     },
+  *     {
+  *       text: "banana",
+  *       prompts: [
+  *         {
+  *          categories: ["DEFAULT", "desert"],
+  *          text: "banana"
+  *         }
+  *       ]
   *     }
   *   ]
   * }
@@ -71,6 +101,63 @@ synonyms.addSynonymsToApp = function(app){
     app[app.getMappingFunctionName(name)] = function(value){
       return app.mapCustomSlotValue(name, value);
     }
+  }
+  /**
+  * Call to get the list of custom slots.
+  * @returns {array} - list of custom slot names.
+  */
+  app.getCustomSlotNames = function(){
+    var returnValues = [];
+    for (var key in app.customSlots) {
+      if (app.customSlots.hasOwnProperty(key)) {
+        returnValues.push(key);
+      }
+    }
+    return returnValues;
+  }
+  /**
+  * Call to get the list of prompts for a slot for a particular category.
+  * If the category is not specified, "DEFAULT" category is used.
+  * @param {string} slotName - Name of the slot
+  * @param {category} category - the prompt category for which to get the prompt.
+  * @returns {array} - list of prompts.
+  */
+  app.getPrompts = function(slotName, category){
+    var returnValues = [];
+    if(typeof slotName =="undefined"){
+      return returnValues
+    }
+    if(typeof category == 'undefined'){
+      category = "DEFAULT";
+    }
+    var slot = app.customSlots[slotName];
+    if(typeof slot == "undefined"){
+      return returnValues;
+    }
+    var slotValues = slot.values;
+    for (var i = 0; i < slotValues.length; i++){
+      var value = slotValues[i];
+      if(typeof value.prompts == 'undefined'){
+        continue;
+      }
+      for(var j = 0; j < value.prompts.length; j++){
+        var prompt = value.prompts[j];
+        if(prompt.categories.indexOf(category) >= 0){
+          if(returnValues.indexOf(prompt.text) < 0){
+            returnValues.push(prompt.text);
+          }
+        }
+      }
+    }
+    return returnValues
+  }
+  /**
+  * This is equivalent to calling the getPrompts without the category argument.
+  * @param {string} - Name of the slot for which to return the list of prompts.
+  * @returns {array} - list of all the default prompts.
+  */
+  app.getDefaultPrompts = function(slotName){
+    return app.getPrompts(slotName, "DEFAULT");
   }
   /**
   * Call getSlotDumpFileName to get the file name to be used for dumping (a.k.a.

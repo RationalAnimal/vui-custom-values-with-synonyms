@@ -24,6 +24,109 @@ SOFTWARE.
 var expect = require("chai").expect;
 var synonyms = require("../index.js");
 describe("vui-custom-values-with-synonyms", function() {
+  describe("getCustomSlotNames", function() {
+    var app = {};
+    synonyms.addSynonymsToApp(app);
+    app.addCustomSlot("fruit",
+      {values: [
+        {
+          text: "apple"
+        },
+        {
+          text: "golden delicious",
+          mapTo: "apple"
+        },
+        {
+          text: "banana"
+        }
+      ]}
+    );
+    app.addCustomSlot("vegetable",
+      {
+        mappingFunctionName: "mapDeliciousVegetable",
+        fileName: "essentialvegetables.txt",
+        values: [
+        {
+          text: "carrot"
+        },
+        {
+          text: "russel",
+          mapTo: "potato"
+        },
+        {
+          text: "potato"
+        }
+      ]}
+    );
+
+    var slotNames = app.getCustomSlotNames();
+    it("verify that we are getting back the slot names.", function() {
+      expect(slotNames[0]).to.equal("fruit");
+      expect(slotNames[1]).to.equal("vegetable");
+    });
+  });
+
+
+  describe("getPrompts", function() {
+    var app = {};
+    synonyms.addSynonymsToApp(app);
+    app.addCustomSlot("fruit",
+      {
+        values: [
+          {
+            text: "apple",
+            prompts: [
+              {
+                categories: ["DEFAULT", "desert"],
+                text: "apple"
+              }
+            ]
+          },
+          {
+            text: "golden delicious",
+            mapTo: "apple",
+            prompts: [
+              {
+                categories: ["apple variety"],
+                text: "golden delicious apple"
+              }
+            ]
+          },
+          {
+            text: "granny smith",
+            mapTo: "apple",
+            prompts: [
+              {
+                categories: ["apple variety"],
+                text: "granny smith apple"
+              }
+            ]
+          },
+          {
+            text: "banana",
+            prompts: [
+              {
+                categories: ["DEFAULT", "desert"],
+                text: "banana"
+              }
+            ]
+          }
+        ]
+      }
+    );
+
+    var defaultPrompts = app.getPrompts("fruit");
+    var applePrompts = app.getPrompts("fruit", "apple variety");
+    it("verify that we are getting back the default prompts.", function() {
+      expect(defaultPrompts[0]).to.equal("apple");
+      expect(defaultPrompts[1]).to.equal("banana");
+    });
+    it("verify that we are getting back the prompts.", function() {
+      expect(applePrompts[0]).to.equal("golden delicious apple");
+      expect(applePrompts[1]).to.equal("granny smith apple");
+    });
+  });
+
   describe("getSlotDumpFileName", function() {
     var app = {};
     synonyms.addSynonymsToApp(app);
