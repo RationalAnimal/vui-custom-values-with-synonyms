@@ -93,9 +93,10 @@ app.addCustomSlot("vegetable",
 the following code
 
 ```javascript
-console.log(app.mapDeliciousVegetable(app.getCustomSlotValues("vegetable")[0]));
-console.log(app.mapDeliciousVegetable(app.getCustomSlotValues("vegetable")[1]));
-console.log(app.mapDeliciousVegetable(app.getCustomSlotValues("vegetable")[2]));
+var vegetables = app.getCustomSlotValues("vegetable");
+console.log(app.mapDeliciousVegetable(vegetables[0]));
+console.log(app.mapDeliciousVegetable(vegetables[1]));
+console.log(app.mapDeliciousVegetable(vegetables[2]));
 ```
 
 will print the mapped slot values for the "vegetable" custom slot:
