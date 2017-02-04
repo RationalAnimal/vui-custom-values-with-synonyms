@@ -2,6 +2,10 @@
 
 npm package that provides ability to add custom "slot" (i.e. VUI type) with synonym functionality to any javascript object.
 
+# Repository
+This module as well as related vui modules can be found here:
+https://github.com/RationalAnimal
+
 # Installation
 
 ```shell
