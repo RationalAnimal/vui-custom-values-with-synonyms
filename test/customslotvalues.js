@@ -24,10 +24,10 @@ SOFTWARE.
 var expect = require("chai").expect;
 var synonyms = require("../index.js");
 describe("vui-custom-values-with-synonyms", function() {
-  describe("getCustomSlotTypeNames", function() {
+  describe("getCustomInputTypeNames", function() {
     var app = {};
     synonyms.addSynonymsToApp(app);
-    app.addCustomSlotType("fruit",
+    app.addCustomInputType("fruit",
       {values: [
         {
           text: "apple"
@@ -41,7 +41,7 @@ describe("vui-custom-values-with-synonyms", function() {
         }
       ]}
     );
-    app.addCustomSlotType("vegetable",
+    app.addCustomInputType("vegetable",
       {
         mappingFunctionName: "mapDeliciousVegetable",
         fileName: "essentialvegetables.txt",
@@ -59,7 +59,7 @@ describe("vui-custom-values-with-synonyms", function() {
       ]}
     );
 
-    var typeNames = app.getCustomSlotTypeNames();
+    var typeNames = app.getCustomInputTypeNames();
     it("verify that we are getting back the type names.", function() {
       expect(typeNames[0]).to.equal("fruit");
       expect(typeNames[1]).to.equal("vegetable");
@@ -70,7 +70,7 @@ describe("vui-custom-values-with-synonyms", function() {
   describe("getPrompts", function() {
     var app = {};
     synonyms.addSynonymsToApp(app);
-    app.addCustomSlotType("fruit",
+    app.addCustomInputType("fruit",
       {
         values: [
           {
@@ -127,10 +127,10 @@ describe("vui-custom-values-with-synonyms", function() {
     });
   });
 
-  describe("getSlotTypeDumpFileName", function() {
+  describe("getInputTypeDumpFileName", function() {
     var app = {};
     synonyms.addSynonymsToApp(app);
-    app.addCustomSlotType("fruit",
+    app.addCustomInputType("fruit",
       {values: [
         {
           text: "apple"
@@ -144,7 +144,7 @@ describe("vui-custom-values-with-synonyms", function() {
         }
       ]}
     );
-    app.addCustomSlotType("vegetable",
+    app.addCustomInputType("vegetable",
       {
         mappingFunctionName: "mapDeliciousVegetable",
         fileName: "essentialvegetables.txt",
@@ -163,17 +163,17 @@ describe("vui-custom-values-with-synonyms", function() {
     );
 
     it("verify that we are getting back the file name to dump the custom type values to.", function() {
-      expect(app.getSlotTypeDumpFileName("fruit")).to.equal("fruit.txt");
+      expect(app.getInputTypeDumpFileName("fruit")).to.equal("fruit.txt");
     });
     it("verify that we are getting back the file name to dump the custom type values to.", function() {
-      expect(app.getSlotTypeDumpFileName("vegetable")).to.equal("essentialvegetables.txt");
+      expect(app.getInputTypeDumpFileName("vegetable")).to.equal("essentialvegetables.txt");
     });
   });
 
-  describe("getCustomSlotTypeValues", function() {
+  describe("getCustomInputTypeValues", function() {
     var app = {};
     synonyms.addSynonymsToApp(app);
-    app.addCustomSlotType("fruit",
+    app.addCustomInputType("fruit",
       {values: [
         {
           text: "apple"
@@ -189,16 +189,16 @@ describe("vui-custom-values-with-synonyms", function() {
     );
 
     it("verify that we are getting back custom type values", function() {
-      expect(app.getCustomSlotTypeValues("fruit")[0]).to.equal("apple");
-      expect(app.getCustomSlotTypeValues("fruit")[1]).to.equal("golden delicious");
-      expect(app.getCustomSlotTypeValues("fruit")[2]).to.equal("banana");
+      expect(app.getCustomInputTypeValues("fruit")[0]).to.equal("apple");
+      expect(app.getCustomInputTypeValues("fruit")[1]).to.equal("golden delicious");
+      expect(app.getCustomInputTypeValues("fruit")[2]).to.equal("banana");
     });
   });
 
   describe("getMappingFunctionName", function() {
     var app = {};
     synonyms.addSynonymsToApp(app);
-    app.addCustomSlotType("fruit",
+    app.addCustomInputType("fruit",
       {values: [
         {
           text: "apple"
@@ -212,7 +212,7 @@ describe("vui-custom-values-with-synonyms", function() {
         }
       ]}
     );
-    app.addCustomSlotType("vegetable",
+    app.addCustomInputType("vegetable",
       {
         mappingFunctionName: "mapDeliciousVegetable",
         values: [
@@ -237,10 +237,10 @@ describe("vui-custom-values-with-synonyms", function() {
     });
   });
 
-  describe("mapCustomSlotTypeValue", function() {
+  describe("mapCustomInputTypeValue", function() {
     var app = {};
     synonyms.addSynonymsToApp(app);
-    app.addCustomSlotType("fruit",
+    app.addCustomInputType("fruit",
       {values: [
         {
           text: "apple"
@@ -254,7 +254,7 @@ describe("vui-custom-values-with-synonyms", function() {
         }
       ]}
     );
-    app.addCustomSlotType("vegetable",
+    app.addCustomInputType("vegetable",
       {
         mappingFunctionName: "mapDeliciousVegetable",
         values: [
@@ -272,43 +272,43 @@ describe("vui-custom-values-with-synonyms", function() {
     );
 
     it("verify that we are getting back mapped custom type values", function() {
-      expect(app.mapCustomSlotTypeValue("fruit", app.getCustomSlotTypeValues("fruit")[0])).to.equal("apple");
-      expect(app.mapCustomSlotTypeValue("fruit", app.getCustomSlotTypeValues("fruit")[1])).to.equal("apple");
-      expect(app.mapCustomSlotTypeValue("fruit", app.getCustomSlotTypeValues("fruit")[2])).to.equal("banana");
+      expect(app.mapCustomInputTypeValue("fruit", app.getCustomInputTypeValues("fruit")[0])).to.equal("apple");
+      expect(app.mapCustomInputTypeValue("fruit", app.getCustomInputTypeValues("fruit")[1])).to.equal("apple");
+      expect(app.mapCustomInputTypeValue("fruit", app.getCustomInputTypeValues("fruit")[2])).to.equal("banana");
     });
     it("verify that we are getting back mapped custom type values when calling the default named mapping function by name", function() {
-      expect(app.mapFruit(app.getCustomSlotTypeValues("fruit")[0])).to.equal("apple");
-      expect(app.mapFruit(app.getCustomSlotTypeValues("fruit")[1])).to.equal("apple");
-      expect(app.mapFruit(app.getCustomSlotTypeValues("fruit")[2])).to.equal("banana");
+      expect(app.mapFruit(app.getCustomInputTypeValues("fruit")[0])).to.equal("apple");
+      expect(app.mapFruit(app.getCustomInputTypeValues("fruit")[1])).to.equal("apple");
+      expect(app.mapFruit(app.getCustomInputTypeValues("fruit")[2])).to.equal("banana");
     });
     it("verify that we are getting back mapped custom type values when calling the custom named mapping function by name", function() {
-      expect(app.mapDeliciousVegetable(app.getCustomSlotTypeValues("vegetable")[0])).to.equal("carrot");
-      expect(app.mapDeliciousVegetable(app.getCustomSlotTypeValues("vegetable")[1])).to.equal("potato");
-      expect(app.mapDeliciousVegetable(app.getCustomSlotTypeValues("vegetable")[2])).to.equal("potato");
+      expect(app.mapDeliciousVegetable(app.getCustomInputTypeValues("vegetable")[0])).to.equal("carrot");
+      expect(app.mapDeliciousVegetable(app.getCustomInputTypeValues("vegetable")[1])).to.equal("potato");
+      expect(app.mapDeliciousVegetable(app.getCustomInputTypeValues("vegetable")[2])).to.equal("potato");
     });
   });
   describe("Loading custom types from json files", function() {
     var app = {};
     synonyms.addSynonymsToApp(app);
     var meats = require("./meat.json");
-    app.addCustomSlotType("meat", meats);
+    app.addCustomInputType("meat", meats);
 
     it("verify that we are getting back custom type values", function() {
-      expect(app.getCustomSlotTypeValues("meat")[0]).to.equal("beef");
-      expect(app.getCustomSlotTypeValues("meat")[1]).to.equal("the other white meat");
-      expect(app.getCustomSlotTypeValues("meat")[2]).to.equal("pork");
+      expect(app.getCustomInputTypeValues("meat")[0]).to.equal("beef");
+      expect(app.getCustomInputTypeValues("meat")[1]).to.equal("the other white meat");
+      expect(app.getCustomInputTypeValues("meat")[2]).to.equal("pork");
     });
     it("verify that we are getting back mapped custom type values when calling the mapping function by name", function() {
-      expect(app.mapDeliciousCritters(app.getCustomSlotTypeValues("meat")[0])).to.equal("beef");
-      expect(app.mapDeliciousCritters(app.getCustomSlotTypeValues("meat")[1])).to.equal("pork");
-      expect(app.mapDeliciousCritters(app.getCustomSlotTypeValues("meat")[2])).to.equal("pork");
+      expect(app.mapDeliciousCritters(app.getCustomInputTypeValues("meat")[0])).to.equal("beef");
+      expect(app.mapDeliciousCritters(app.getCustomInputTypeValues("meat")[1])).to.equal("pork");
+      expect(app.mapDeliciousCritters(app.getCustomInputTypeValues("meat")[2])).to.equal("pork");
     });
   });
 
-  describe("remapCustomSlotTypeValue", function() {
+  describe("remapCustomInputTypeValue", function() {
     var app = {};
     synonyms.addSynonymsToApp(app);
-    app.addCustomSlotType("fruit",
+    app.addCustomInputType("fruit",
       {values: [
         {
           text: "apple"
@@ -323,28 +323,28 @@ describe("vui-custom-values-with-synonyms", function() {
         }
       ]}
     );
-    app.remapCustomSlotTypeValue("fruit", "golden delicious", "pear");
-    app.remapCustomSlotTypeValue("fruit", "orange", "citrus", true);
-    app.remapCustomSlotTypeValue("fruit", "plantain", "plantain");
+    app.remapCustomInputTypeValue("fruit", "golden delicious", "pear");
+    app.remapCustomInputTypeValue("fruit", "orange", "citrus", true);
+    app.remapCustomInputTypeValue("fruit", "plantain", "plantain");
 
     it("verify that we are getting back mapped custom type values", function() {
-      expect(app.mapCustomSlotTypeValue("fruit", app.getCustomSlotTypeValues("fruit")[0])).to.equal("apple");
-      expect(app.mapCustomSlotTypeValue("fruit", app.getCustomSlotTypeValues("fruit")[1])).to.equal("pear");
-      expect(app.mapCustomSlotTypeValue("fruit", app.getCustomSlotTypeValues("fruit")[2])).to.equal("plantain");
-      expect(app.mapCustomSlotTypeValue("fruit", app.getCustomSlotTypeValues("fruit")[3])).to.equal("citrus");
+      expect(app.mapCustomInputTypeValue("fruit", app.getCustomInputTypeValues("fruit")[0])).to.equal("apple");
+      expect(app.mapCustomInputTypeValue("fruit", app.getCustomInputTypeValues("fruit")[1])).to.equal("pear");
+      expect(app.mapCustomInputTypeValue("fruit", app.getCustomInputTypeValues("fruit")[2])).to.equal("plantain");
+      expect(app.mapCustomInputTypeValue("fruit", app.getCustomInputTypeValues("fruit")[3])).to.equal("citrus");
     });
     it("verify that we are getting back mapped custom type values when calling the default named mapping function by name", function() {
-      expect(app.mapFruit(app.getCustomSlotTypeValues("fruit")[0])).to.equal("apple");
-      expect(app.mapFruit(app.getCustomSlotTypeValues("fruit")[1])).to.equal("pear");
-      expect(app.mapFruit(app.getCustomSlotTypeValues("fruit")[2])).to.equal("plantain");
-      expect(app.mapFruit(app.getCustomSlotTypeValues("fruit")[3])).to.equal("citrus");
+      expect(app.mapFruit(app.getCustomInputTypeValues("fruit")[0])).to.equal("apple");
+      expect(app.mapFruit(app.getCustomInputTypeValues("fruit")[1])).to.equal("pear");
+      expect(app.mapFruit(app.getCustomInputTypeValues("fruit")[2])).to.equal("plantain");
+      expect(app.mapFruit(app.getCustomInputTypeValues("fruit")[3])).to.equal("citrus");
     });
   });
-  describe("remapCustomSlotTypeMapping", function() {
+  describe("remapCustomInputTypeMapping", function() {
     var app = {};
     synonyms.addSynonymsToApp(app);
     var meats = require("./meat.json");
-    app.addCustomSlotType("meat",
+    app.addCustomInputType("meat",
       {
         "mappingFunctionName": "mapDeliciousCritters",
         "fileName": "tastycritters.txt",
@@ -362,17 +362,17 @@ describe("vui-custom-values-with-synonyms", function() {
         ]
       }
     );
-    app.remapCustomSlotTypeMapping("meat", "pork", "the other white meat");
+    app.remapCustomInputTypeMapping("meat", "pork", "the other white meat");
 
     it("verify that we are getting back custom type values", function() {
-      expect(app.getCustomSlotTypeValues("meat")[0]).to.equal("beef");
-      expect(app.getCustomSlotTypeValues("meat")[1]).to.equal("the other white meat");
-      expect(app.getCustomSlotTypeValues("meat")[2]).to.equal("pork");
+      expect(app.getCustomInputTypeValues("meat")[0]).to.equal("beef");
+      expect(app.getCustomInputTypeValues("meat")[1]).to.equal("the other white meat");
+      expect(app.getCustomInputTypeValues("meat")[2]).to.equal("pork");
     });
     it("verify that we are getting back mapped custom type values when calling the mapping function by name", function() {
-      expect(app.mapDeliciousCritters(app.getCustomSlotTypeValues("meat")[0])).to.equal("beef");
-      expect(app.mapDeliciousCritters(app.getCustomSlotTypeValues("meat")[1])).to.equal("the other white meat");
-      expect(app.mapDeliciousCritters(app.getCustomSlotTypeValues("meat")[2])).to.equal("the other white meat");
+      expect(app.mapDeliciousCritters(app.getCustomInputTypeValues("meat")[0])).to.equal("beef");
+      expect(app.mapDeliciousCritters(app.getCustomInputTypeValues("meat")[1])).to.equal("the other white meat");
+      expect(app.mapDeliciousCritters(app.getCustomInputTypeValues("meat")[2])).to.equal("the other white meat");
     });
   });
 });
