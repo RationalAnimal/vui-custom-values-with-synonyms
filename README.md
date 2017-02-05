@@ -33,7 +33,7 @@ var synonyms = require("<path to vui-custom-values-with-synonyms>");
 var app = {};
 synonyms.addSynonymsToApp(app);
 
-app.addCustomType("vegetable",
+app.addCustomSlotType("vegetable",
   {
     mappingFunctionName: "mapDeliciousVegetable",
     values: [
@@ -56,7 +56,7 @@ app.addCustomType("vegetable",
 One of the advantages of using this module is that you can generate the custom type (type) values directly from the code:
 
 ```javascript
-console.log(app.getCustomSlotValues("vegetable"));
+console.log(app.getCustomSlotTypeValues("vegetable"));
 ```
 
 will print out all the type values for the "vegetable" custom type:
@@ -76,7 +76,7 @@ And this module will automatically generate of mapping function whenever you add
 So, after adding "vegetable" custom type such as this:
 
 ```javascript
-app.addCustomType("vegetable",
+app.addCustomSlotType("vegetable",
   {
     mappingFunctionName: "mapDeliciousVegetable",
     values: [
@@ -97,7 +97,7 @@ app.addCustomType("vegetable",
 the following code
 
 ```javascript
-var vegetables = app.getCustomSlotValues("vegetable");
+var vegetables = app.getCustomSlotTypeValues("vegetable");
 console.log(app.mapDeliciousVegetable(vegetables[0]));
 console.log(app.mapDeliciousVegetable(vegetables[1]));
 console.log(app.mapDeliciousVegetable(vegetables[2]));
@@ -121,7 +121,7 @@ Imagine you would like to ask a user what type of movie he'd like to watch.  You
 define a custom type this way:
 
 ```javascript
-app.addCustomType("moviegenre",
+app.addCustomSlotType("moviegenre",
   {
     mappingFunctionName: "mapMovieGenre",
 		values: [
@@ -181,16 +181,16 @@ for(var i = 0; i < dateNightPrompts.length; i++){
 
 # Loading from JSON files
 
-Since a custom type is defined by passing a JSON object to the addCustomType(),
+Since a custom type is defined by passing a JSON object to the addCustomSlotType(),
 you can easily load it from a file, e.g.:
 
 ```javascript
 var meats = require("./meat.json");
-app.addCustomType("meat", meats);
+app.addCustomSlotType("meat", meats);
 ```
 
 where the meat.json file contains the same text as what you'd pass to
-addCustomType() call:
+addCustomSlotType() call:
 
 ```shell
 {

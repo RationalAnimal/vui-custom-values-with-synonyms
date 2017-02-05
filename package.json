@@ -1,6 +1,6 @@
 {
   "name": "vui-custom-values-with-synonyms",
-  "version": "2.0.0",
+  "version": "3.0.0",
   "description": "Generate custom type values directly from code.  Generate mapping functions between equivalent custom type values. Specify prompts to be used with custom values when asking for them.",
   "main": "index.js",
   "scripts": {
@@ -24,6 +24,7 @@
     "alexa",
     "custom slot",
     "custom type",
+    "custom slot type",
     "synonyms"
   ]
 }

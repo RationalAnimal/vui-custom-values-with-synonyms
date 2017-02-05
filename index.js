@@ -35,7 +35,7 @@ var synonyms = {};
 synonyms.addSynonymsToApp = function(app){
   app.customSlotTypes = [];
   /**
-  * Call addCustomType to add a fully specified custom type to this object.
+  * Call addCustomSlotType to add a fully specified custom type to this object.
   * @param {string} name - This is the name given to the custom type, such
   * as in the Alexa developer console, e.g. 'MYFRUITSLOT'
   * @param {object} type - This is the object describing the type. Example of
@@ -93,20 +93,20 @@ synonyms.addSynonymsToApp = function(app){
   *   ]
   * }
   */
-  app.addCustomType = function(name, type){
+  app.addCustomSlotType = function(name, type){
     if(typeof type == 'undefined' || typeof name == 'undefined'){
       return;
     }
     app.customSlotTypes[name] = type;
     app[app.getMappingFunctionName(name)] = function(value){
-      return app.mapCustomSlotValue(name, value);
+      return app.mapCustomSlotTypeValue(name, value);
     }
   }
   /**
   * Call to get the list of custom type.
   * @returns {array} - list of custom type names.
   */
-  app.getCustomTypeNames = function(){
+  app.getCustomSlotTypeNames = function(){
     var returnValues = [];
     for (var key in app.customSlotTypes) {
       if (app.customSlotTypes.hasOwnProperty(key)) {
@@ -160,17 +160,17 @@ synonyms.addSynonymsToApp = function(app){
     return app.getPrompts(typeName, "DEFAULT");
   }
   /**
-  * Call getSlotDumpFileName to get the file name to be used for dumping (a.k.a.
+  * Call getSlotTypeDumpFileName to get the file name to be used for dumping (a.k.a.
   * exporting) the custom type values into.  This file can then be used to load
   * these values into developer console when defining interaction model for this
   * skill.
   * NOTE: this is currently not used yet.  To "dump" the values simply use
-  * getCustomSlotValues() call and pipe it to a file.
+  * getCustomSlotTypeValues() call and pipe it to a file.
   * @param {string} name - This is the custom type name for which we need the
   * filename.
   * @returns {string} - The file name
   */
-  app.getSlotDumpFileName = function(name){
+  app.getSlotTypeDumpFileName = function(name){
     if(typeof name == 'undefined' || typeof app.customSlotTypes[name] == 'undefined'){
       return;
     }
@@ -180,12 +180,12 @@ synonyms.addSynonymsToApp = function(app){
     return app.customSlotTypes[name].fileName;
   }
   /**
-  * Call getCustomSlotValues to get array of the custom type values.
+  * Call getCustomSlotTypeValues to get array of the custom type values.
   * @param {string} name - This is the custom type name for which we want the
   * resulting array.
   * @returns {array} - Array of strings of the custom type values.
   */
-  app.getCustomSlotValues = function(typeName){
+  app.getCustomSlotTypeValues = function(typeName){
     if(typeof typeName == 'undefined' || typeof app.customSlotTypes[typeName] == 'undefined'){
       return;
     }
@@ -225,15 +225,15 @@ synonyms.addSynonymsToApp = function(app){
   }
 
   /**
-  * You should rarely be using mapCustomSlotValue as this is the "generic"
+  * You should rarely be using mapCustomSlotTypeValue as this is the "generic"
   * mapping function.  Since each custom type will result in having its own
-  * mapping function added, those should be used instead of mapCustomSlotValue.
+  * mapping function added, those should be used instead of mapCustomSlotTypeValue.
   * @param {string} typeName - This is the custom type name for which we want to
   * map a value
   * @param {string} value - This is the custom type value which we want to map.
   * @returns {string} - The mapped value.
   */
-  app.mapCustomSlotValue = function(typeName, value){
+  app.mapCustomSlotTypeValue = function(typeName, value){
     if(typeof typeName == 'undefined' || typeof app.customSlotTypes[typeName] == 'undefined'){
       return;
     }
@@ -256,7 +256,7 @@ synonyms.addSynonymsToApp = function(app){
     return;
   }
   /**
-  * Call remapCustomSlotValue to change what a specific custom value maps to.
+  * Call remapCustomSlotTypeValue to change what a specific custom value maps to.
   * @param {string} typeName - The name of the custom type whose value is to be
   * remapped.
   * @param {string} value - The custom type value to be remapped.
@@ -269,7 +269,7 @@ synonyms.addSynonymsToApp = function(app){
   * true and also if value is not found amongst the custom type values, then it
   * will be added together with the new mapping for it.
   */
-  app.remapCustomSlotValue = function(typeName, value, newMapping, createIfDoesNotExist){
+  app.remapCustomSlotTypeValue = function(typeName, value, newMapping, createIfDoesNotExist){
     if(typeof typeName == 'undefined' || typeof app.customSlotTypes[typeName] == 'undefined'){
       return;
     }
@@ -302,18 +302,18 @@ synonyms.addSynonymsToApp = function(app){
   }
 
   /**
-  * Call remapCustomSlotMapping to change the mapping of all values that map to
+  * Call remapCustomSlotTypeMapping to change the mapping of all values that map to
   * oldMapping to newMapping instead.
   * @param {string} typeName - The name of the custom type whose values are to
   * be remapped.
   * @param {string} oldMapping - The mapping that will be changed to newMapping.
   * @param {string} newMapping - The mapping that will be returned when calling
-  * mapCustomSlotValue or the type specific mapXXX function that currently return
+  * mapCustomSlotTypeValue or the type specific mapXXX function that currently return
   * oldMapping. If the new mapping is the same as the value then internally the
   * old mapping is erased.  The mapping functions will still return the new
   * mapping since they default to the value itself if there isn't a mapping.
   */
-  app.remapCustomSlotMapping = function(typeName, oldMapping, newMapping){
+  app.remapCustomSlotTypeMapping = function(typeName, oldMapping, newMapping){
     if(typeof typeName == 'undefined' || typeof app.customSlotTypes[typeName] == 'undefined'){
       return;
     }
