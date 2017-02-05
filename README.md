@@ -1,6 +1,6 @@
 # vui-custom-values-with-synonyms
 
-npm package that provides ability to add custom "slot" (i.e. VUI type) with synonym functionality to any javascript object.
+npm package that provides ability to add custom VUI type with synonym functionality to any javascript object.
 
 # Repository
 This module as well as related vui modules can be found here:
@@ -19,10 +19,10 @@ or, if you don't want to run unit tests on it:
 
 # Summary
 
-This project provides npm package to add custom "slot" (i.e. VUI type) with synonym functionality to any javascript object.
-Once this functionality is added then the custom slots and their associated values can be added.
-Then you can generate custom slot values directly from code for import into, for example, Amazon Alexa console.
-Furthermore, the use of these values is further improved because mapping functions between equivalent custom slot values are automatically generated and added to the object.
+This project provides npm package to add custom VUI type with synonym functionality to any javascript object.
+Once this functionality is added then the custom types and their associated values can be added.
+Then you can generate custom type values directly from code for import into, for example, Amazon Alexa console.
+Furthermore, the use of these values is further improved because mapping functions between equivalent custom type values are automatically generated and added to the object.
 While the primary purpose is to add this functionality to other VUI related objects, this is NOT necessary and is purely driven by usefulness.
 These functions can be added to ANY object and they don't require that the target class has anything to do with VUI.
 
@@ -33,7 +33,7 @@ var synonyms = require("<path to vui-custom-values-with-synonyms>");
 var app = {};
 synonyms.addSynonymsToApp(app);
 
-app.addCustomSlot("vegetable",
+app.addCustomType("vegetable",
   {
     mappingFunctionName: "mapDeliciousVegetable",
     values: [
@@ -51,15 +51,15 @@ app.addCustomSlot("vegetable",
 );
 
 ```
-# Dumping custom slot values
+# Dumping custom type values
 
-One of the advantages of using this module is that you can generate the custom slot (type) values directly from the code:
+One of the advantages of using this module is that you can generate the custom type (type) values directly from the code:
 
 ```javascript
 console.log(app.getCustomSlotValues("vegetable"));
 ```
 
-will print out all the slot values for the "vegetable" custom slot:
+will print out all the type values for the "vegetable" custom type:
 
 ```shell
 carrot
@@ -72,11 +72,11 @@ potato
 Frequently in a VUI app you will design your interactions so that your app will accept multiple versions of the same answer.
 For example, an ingredients question might ask for vegetables and will treat "scallion" and "green onion" values as completely equivalent.
 Rather than have ad hoc logic, you can simply treat them as synonyms and map them to the same value.
-And this module will automatically generate of mapping function whenever you add a custom slot.
-So, after adding "vegetable" custom slot such as this:
+And this module will automatically generate of mapping function whenever you add a custom type.
+So, after adding "vegetable" custom type such as this:
 
 ```javascript
-app.addCustomSlot("vegetable",
+app.addCustomType("vegetable",
   {
     mappingFunctionName: "mapDeliciousVegetable",
     values: [
@@ -103,7 +103,7 @@ console.log(app.mapDeliciousVegetable(vegetables[1]));
 console.log(app.mapDeliciousVegetable(vegetables[2]));
 ```
 
-will print the mapped slot values for the "vegetable" custom slot:
+will print the mapped type values for the "vegetable" custom type:
 
 ```shell
 potato
@@ -114,14 +114,14 @@ scallion
 
 In VUI programming there is often a need to prompt the user for selecting amongst
 several options. When these answers are accepted they are usually treated as a
-custom slot - this way only a single intent is needed.  With vui-custom-values-with-synonyms
-you can add the prompts as part of the custom slot/type definition.
+custom type - this way only a single intent is needed.  With vui-custom-values-with-synonyms
+you can add the prompts as part of the custom type definition.
 
 Imagine you would like to ask a user what type of movie he'd like to watch.  You may
-define a custom slot this way:
+define a custom type this way:
 
 ```javascript
-app.addCustomSlot("moviegenre",
+app.addCustomType("moviegenre",
   {
     mappingFunctionName: "mapMovieGenre",
 		values: [
@@ -181,16 +181,16 @@ for(var i = 0; i < dateNightPrompts.length; i++){
 
 # Loading from JSON files
 
-Since a custom slot is defined by passing a JSON object to the addCustomSlot(),
+Since a custom type is defined by passing a JSON object to the addCustomType(),
 you can easily load it from a file, e.g.:
 
 ```javascript
 var meats = require("./meat.json");
-app.addCustomSlot("meat", meats);
+app.addCustomType("meat", meats);
 ```
 
 where the meat.json file contains the same text as what you'd pass to
-addCustomSlot() call:
+addCustomType() call:
 
 ```shell
 {

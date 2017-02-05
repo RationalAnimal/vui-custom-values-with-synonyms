@@ -33,22 +33,22 @@ var synonyms = {};
  * @param {object} app - The object to which the functionality should be added.
  */
 synonyms.addSynonymsToApp = function(app){
-  app.customSlots = [];
+  app.customSlotTypes = [];
   /**
-  * Call addCustomSlot to add a fully specified custom type/slot to this object.
-  * @param {string} name - This is the name given to the custom type/slot, such
+  * Call addCustomType to add a fully specified custom type to this object.
+  * @param {string} name - This is the name given to the custom type, such
   * as in the Alexa developer console, e.g. 'MYFRUITSLOT'
-  * @param {object} slot - This is the object describing the type/slot. Example of
-  * type/slot object:
+  * @param {object} type - This is the object describing the type. Example of
+  * type object:
   * {
-  *   // This is the name of the file to create when dumping type/slots values
+  *   // This is the name of the file to create when dumping type values
   *   // for later import into developer's console.
-  *   // This is OPTIONAL - will default to lower case <slot name>.txt, e.g.
-  *   // myfruitslot.txt
+  *   // This is OPTIONAL - will default to lower case <type name>.txt, e.g.
+  *   // myfruittype.txt
   *   fileName: 'fruits.txt',
   *   // This is the name that will be given to the generated function that can
   *   // be called to map custom values. This is OPTIONAL - will default to
-  *   // map<slot name> with the camel case, e.g.: mapMyfruitslot
+  *   // map<type name> with the camel case, e.g.: mapMyfruittype
   *   mappingFunctionName: 'mapFruit',
   *
   *   values: [
@@ -93,50 +93,50 @@ synonyms.addSynonymsToApp = function(app){
   *   ]
   * }
   */
-  app.addCustomSlot = function(name, slot){
-    if(typeof slot == 'undefined' || typeof name == 'undefined'){
+  app.addCustomType = function(name, type){
+    if(typeof type == 'undefined' || typeof name == 'undefined'){
       return;
     }
-    app.customSlots[name] = slot;
+    app.customSlotTypes[name] = type;
     app[app.getMappingFunctionName(name)] = function(value){
       return app.mapCustomSlotValue(name, value);
     }
   }
   /**
-  * Call to get the list of custom slots.
-  * @returns {array} - list of custom slot names.
+  * Call to get the list of custom type.
+  * @returns {array} - list of custom type names.
   */
-  app.getCustomSlotNames = function(){
+  app.getCustomTypeNames = function(){
     var returnValues = [];
-    for (var key in app.customSlots) {
-      if (app.customSlots.hasOwnProperty(key)) {
+    for (var key in app.customSlotTypes) {
+      if (app.customSlotTypes.hasOwnProperty(key)) {
         returnValues.push(key);
       }
     }
     return returnValues;
   }
   /**
-  * Call to get the list of prompts for a slot for a particular category.
+  * Call to get the list of prompts for a custom type for a particular category.
   * If the category is not specified, "DEFAULT" category is used.
-  * @param {string} slotName - Name of the slot
+  * @param {string} typeName - Name of the type
   * @param {category} category - the prompt category for which to get the prompt.
   * @returns {array} - list of prompts.
   */
-  app.getPrompts = function(slotName, category){
+  app.getPrompts = function(typeName, category){
     var returnValues = [];
-    if(typeof slotName =="undefined"){
+    if(typeof typeName =="undefined"){
       return returnValues
     }
     if(typeof category == 'undefined'){
       category = "DEFAULT";
     }
-    var slot = app.customSlots[slotName];
-    if(typeof slot == "undefined"){
+    var type = app.customSlotTypes[typeName];
+    if(typeof type == "undefined"){
       return returnValues;
     }
-    var slotValues = slot.values;
-    for (var i = 0; i < slotValues.length; i++){
-      var value = slotValues[i];
+    var typeValues = type.values;
+    for (var i = 0; i < typeValues.length; i++){
+      var value = typeValues[i];
       if(typeof value.prompts == 'undefined'){
         continue;
       }
@@ -153,51 +153,51 @@ synonyms.addSynonymsToApp = function(app){
   }
   /**
   * This is equivalent to calling the getPrompts without the category argument.
-  * @param {string} - Name of the slot for which to return the list of prompts.
+  * @param {string} - Name of the type for which to return the list of prompts.
   * @returns {array} - list of all the default prompts.
   */
-  app.getDefaultPrompts = function(slotName){
-    return app.getPrompts(slotName, "DEFAULT");
+  app.getDefaultPrompts = function(typeName){
+    return app.getPrompts(typeName, "DEFAULT");
   }
   /**
   * Call getSlotDumpFileName to get the file name to be used for dumping (a.k.a.
-  * exporting) the custom type/slot values into.  This file can then be used to load
+  * exporting) the custom type values into.  This file can then be used to load
   * these values into developer console when defining interaction model for this
   * skill.
   * NOTE: this is currently not used yet.  To "dump" the values simply use
   * getCustomSlotValues() call and pipe it to a file.
-  * @param {string} name - This is the custom type/slot name for which we need the
+  * @param {string} name - This is the custom type name for which we need the
   * filename.
   * @returns {string} - The file name
   */
   app.getSlotDumpFileName = function(name){
-    if(typeof name == 'undefined' || typeof app.customSlots[name] == 'undefined'){
+    if(typeof name == 'undefined' || typeof app.customSlotTypes[name] == 'undefined'){
       return;
     }
-    if(typeof app.customSlots[name].fileName == 'undefined'){
+    if(typeof app.customSlotTypes[name].fileName == 'undefined'){
       return name.toLowerCase() + ".txt";
     }
-    return app.customSlots[name].fileName;
+    return app.customSlotTypes[name].fileName;
   }
   /**
-  * Call getCustomSlotValues to get array of the custom type/slot values.
-  * @param {string} name - This is the custom type/slot name for which we want the
+  * Call getCustomSlotValues to get array of the custom type values.
+  * @param {string} name - This is the custom type name for which we want the
   * resulting array.
-  * @returns {array} - Array of strings of the custom type/slot values.
+  * @returns {array} - Array of strings of the custom type values.
   */
-  app.getCustomSlotValues = function(slotName){
-    if(typeof slotName == 'undefined' || typeof app.customSlots[slotName] == 'undefined'){
+  app.getCustomSlotValues = function(typeName){
+    if(typeof typeName == 'undefined' || typeof app.customSlotTypes[typeName] == 'undefined'){
       return;
     }
-    var slotArray = app.customSlots[slotName].values;
+    var typeArray = app.customSlotTypes[typeName].values;
     var returnArray = [];
-    if(typeof slotArray == 'undefined'){
+    if(typeof typeArray == 'undefined'){
       return;
     }
-    for(var i = 0; i < slotArray.length; i++){
-      var slotValue = slotArray[i];
-      if(typeof slotValue != 'undefined' && typeof slotValue.text != 'undefined'){
-        returnArray.push(slotValue.text);
+    for(var i = 0; i < typeArray.length; i++){
+      var typeValue = typeArray[i];
+      if(typeof typeValue != 'undefined' && typeof typeValue.text != 'undefined'){
+        returnArray.push(typeValue.text);
       }
     }
     return returnArray;
@@ -205,51 +205,51 @@ synonyms.addSynonymsToApp = function(app){
 
   /**
   * Call getMappingFunctionName to get the name of the mapping function for the
-  * custom type/slot values.
-  * @param {string} name - This is the custom type/slot name for which we want the
+  * custom type values.
+  * @param {string} name - This is the custom type name for which we want the
   * mapping function name.
   * @returns {string} - The function name
   */
   app.getMappingFunctionName = function(name){
-    if(typeof name == 'undefined' || typeof app.customSlots[name] == 'undefined'){
+    if(typeof name == 'undefined' || typeof app.customSlotTypes[name] == 'undefined'){
       return;
     }
-    if(typeof app.customSlots[name].mappingFunctionName == 'undefined'){
+    if(typeof app.customSlotTypes[name].mappingFunctionName == 'undefined'){
       var scratch = name.substring(0, 1).toUpperCase();
       if(name.length > 1){
         scratch += name.substring(1);
       }
       return "map" + scratch;
     }
-    return app.customSlots[name].mappingFunctionName;
+    return app.customSlotTypes[name].mappingFunctionName;
   }
 
   /**
   * You should rarely be using mapCustomSlotValue as this is the "generic"
-  * mapping function.  Since each custom type/slot will result in having its own
+  * mapping function.  Since each custom type will result in having its own
   * mapping function added, those should be used instead of mapCustomSlotValue.
-  * @param {string} slotName - This is the custom type/slot name for which we want to
+  * @param {string} typeName - This is the custom type name for which we want to
   * map a value
-  * @param {string} value - This is the custom type/slot value which we want to map.
+  * @param {string} value - This is the custom type value which we want to map.
   * @returns {string} - The mapped value.
   */
-  app.mapCustomSlotValue = function(slotName, value){
-    if(typeof slotName == 'undefined' || typeof app.customSlots[slotName] == 'undefined'){
+  app.mapCustomSlotValue = function(typeName, value){
+    if(typeof typeName == 'undefined' || typeof app.customSlotTypes[typeName] == 'undefined'){
       return;
     }
 
-    var slotArray = app.customSlots[slotName].values;    var returnArray = [];
-    if(typeof slotArray == 'undefined'){
+    var typeArray = app.customSlotTypes[typeName].values;    var returnArray = [];
+    if(typeof typeArray == 'undefined'){
       return;
     }
-    for(var i = 0; i < slotArray.length; i++){
-      var slotValue = slotArray[i];
-      if(slotValue.text == value){
-        if(typeof slotValue.mapTo != 'undefined'){
-          return slotValue.mapTo;
+    for(var i = 0; i < typeArray.length; i++){
+      var typeValue = typeArray[i];
+      if(typeValue.text == value){
+        if(typeof typeValue.mapTo != 'undefined'){
+          return typeValue.mapTo;
         }
         else {
-          return slotValue.text;
+          return typeValue.text;
         }
       }
     }
@@ -257,38 +257,38 @@ synonyms.addSynonymsToApp = function(app){
   }
   /**
   * Call remapCustomSlotValue to change what a specific custom value maps to.
-  * @param {string} slotName - The name of the custom type/slot whose value is to be
+  * @param {string} typeName - The name of the custom type whose value is to be
   * remapped.
-  * @param {string} value - The custom type/slot value to be remapped.
+  * @param {string} value - The custom type value to be remapped.
   * @param {string} newMapping - The mapping that the value will be mapped to
-  * when calling mapCustomSlotValue or the type/slot specific mapXXX function.  If
+  * when calling mapCustomSlotValue or the type specific mapXXX function.  If
   * the new mapping is the same as the value then internally the old mapping is
   * erased.  The mapping functions will still return the new mapping since they
   * default to the value itself if there isn't a mapping.
   * @param {boolean} createIfDoesNotExist - if this value is present and set to
-  * true and also if value is not found amongst the custom type/slot values, then it
+  * true and also if value is not found amongst the custom type values, then it
   * will be added together with the new mapping for it.
   */
-  app.remapCustomSlotValue = function(slotName, value, newMapping, createIfDoesNotExist){
-    if(typeof slotName == 'undefined' || typeof app.customSlots[slotName] == 'undefined'){
+  app.remapCustomSlotValue = function(typeName, value, newMapping, createIfDoesNotExist){
+    if(typeof typeName == 'undefined' || typeof app.customSlotTypes[typeName] == 'undefined'){
       return;
     }
     if(typeof value == 'undefined'){
       return;
     }
 
-    var slotArray = app.customSlots[slotName].values;
-    if(typeof slotArray == 'undefined'){
+    var typeArray = app.customSlotTypes[typeName].values;
+    if(typeof typeArray == 'undefined'){
       return;
     }
-    for(var i = 0; i < slotArray.length; i++){
-      var slotValue = slotArray[i];
-      if(slotValue.text == value){
+    for(var i = 0; i < typeArray.length; i++){
+      var typeValue = typeArray[i];
+      if(typeValue.text == value){
         if(value == newMapping){
-          slotValue.mapTo = undefined;
+          typeValue.mapTo = undefined;
         }
         else {
-          slotValue.mapTo = newMapping;
+          typeValue.mapTo = newMapping;
         }
         return;
       }
@@ -296,7 +296,7 @@ synonyms.addSynonymsToApp = function(app){
     // If we are here that means we have not found value amongst the current
     // values.
     if(createIfDoesNotExist == true){
-      slotArray.push({"text": value, "mapTo": newMapping});
+      typeArray.push({"text": value, "mapTo": newMapping});
     }
     return;
   }
@@ -304,17 +304,17 @@ synonyms.addSynonymsToApp = function(app){
   /**
   * Call remapCustomSlotMapping to change the mapping of all values that map to
   * oldMapping to newMapping instead.
-  * @param {string} slotName - The name of the custom type/slot whose values are to
+  * @param {string} typeName - The name of the custom type whose values are to
   * be remapped.
   * @param {string} oldMapping - The mapping that will be changed to newMapping.
   * @param {string} newMapping - The mapping that will be returned when calling
-  * mapCustomSlotValue or the type/slot specific mapXXX function that currently return
+  * mapCustomSlotValue or the type specific mapXXX function that currently return
   * oldMapping. If the new mapping is the same as the value then internally the
   * old mapping is erased.  The mapping functions will still return the new
   * mapping since they default to the value itself if there isn't a mapping.
   */
-  app.remapCustomSlotMapping = function(slotName, oldMapping, newMapping){
-    if(typeof slotName == 'undefined' || typeof app.customSlots[slotName] == 'undefined'){
+  app.remapCustomSlotMapping = function(typeName, oldMapping, newMapping){
+    if(typeof typeName == 'undefined' || typeof app.customSlotTypes[typeName] == 'undefined'){
       return;
     }
     if(typeof oldMapping == 'undefined'){
@@ -325,22 +325,22 @@ synonyms.addSynonymsToApp = function(app){
       return;
     }
 
-    var slotArray = app.customSlots[slotName].values;
-    if(typeof slotArray == 'undefined'){
+    var typeArray = app.customSlotTypes[typeName].values;
+    if(typeof typeArray == 'undefined'){
       return;
     }
-    for(var i = 0; i < slotArray.length; i++){
-      var slotValue = slotArray[i];
-      if(slotValue.mapTo == oldMapping){
-        if(slotValue.text == newMapping) {
-          slotValue.mapTo = undefined;
+    for(var i = 0; i < typeArray.length; i++){
+      var typeValue = typeArray[i];
+      if(typeValue.mapTo == oldMapping){
+        if(typeValue.text == newMapping) {
+          typeValue.mapTo = undefined;
         }
         else {
-          slotValue.mapTo = newMapping;
+          typeValue.mapTo = newMapping;
         }
       }
-      else if(slotValue.text == oldMapping && typeof slotValue.mapTo == 'undefined'){
-        slotValue.mapTo = newMapping;
+      else if(typeValue.text == oldMapping && typeof typeValue.mapTo == 'undefined'){
+        typeValue.mapTo = newMapping;
       }
     }
   }
