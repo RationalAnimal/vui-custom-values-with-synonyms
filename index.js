@@ -33,6 +33,11 @@ var synonyms = {};
  * @param {object} app - The object to which the functionality should be added.
  */
 synonyms.addSynonymsToApp = function(app){
+  if(app.synonymsAlreadyAdded == true){
+    return;
+  }
+  app.synonymsAlreadyAdded = true;
+
   app.customInputTypes = [];
   /**
   * Call addCustomInputType to add a fully specified custom type to this object.
@@ -115,6 +120,22 @@ synonyms.addSynonymsToApp = function(app){
     }
     return returnValues;
   }
+
+  /**
+  * Call to determine whether a particular name is a custom input type name
+  * @param name {string} - the name to test
+  * @returns {boolean} - true if the name equals to one of the custom input type
+  * names.
+  */
+  app.isCustomInputType = function(name){
+    for (var key in app.customInputTypes) {
+      if (app.customInputTypes.hasOwnProperty(key) && name == key) {
+        return true;
+      }
+    }
+    return false;
+  }
+
   /**
   * Call to get the list of prompts for a custom type for a particular category.
   * If the category is not specified, "DEFAULT" category is used.

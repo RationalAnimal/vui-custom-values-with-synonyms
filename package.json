@@ -1,6 +1,6 @@
 {
   "name": "vui-custom-values-with-synonyms",
-  "version": "4.0.0",
+  "version": "4.0.1",
   "description": "Generate custom type values directly from code.  Generate mapping functions between equivalent custom type values. Specify prompts to be used with custom values when asking for them.",
   "main": "index.js",
   "scripts": {
