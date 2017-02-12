@@ -66,6 +66,29 @@ describe("vui-custom-values-with-synonyms", function() {
     });
   });
 
+  describe("isCustomInputType", function() {
+    var app = {};
+    synonyms.addSynonymsToApp(app);
+    app.addCustomInputType("fruit",
+      {values: [
+        {
+          text: "apple"
+        },
+        {
+          text: "golden delicious",
+          mapTo: "apple"
+        },
+        {
+          text: "banana"
+        }
+      ]}
+    );
+
+    it("verify that we are getting back the type names.", function() {
+      expect(app.isCustomInputType("fruit")).to.equal(true);
+      expect(app.isCustomInputType("meat")).to.equal(false);
+    });
+  });
 
   describe("getPrompts", function() {
     var app = {};
